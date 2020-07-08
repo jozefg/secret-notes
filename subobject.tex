@@ -1,0 +1,116 @@
+\documentclass{amsart}
+\usepackage{preamble,categories,macros,}
+\usepackage{locallabel,pftools}
+\usepackage{jmsdelim}
+\usepackage{jon-tikz}
+
+\addbibresource{refs.bib}
+
+\title{The subobject classifier of a glued topos}
+\author{Daniel Gratzer}
+\email{gratzer@cs.au.dk}
+\address{Aarhus, Denmark}
+\date{\today}
+
+\begin{document}
+\begin{abstract}
+  An explicit construction of the subobject classifier of a topos arising from Artin gluing.
+\end{abstract}
+
+\maketitle
+
+Let us fix two (Grothendieck) toposes $\EE$ and $\FF$, and suppose we have a functor preserving
+finite limits between them, $\Mor[F]{\EE}{\FF}$. We wish to show the following theorem:
+\begin{theorem}
+  \label{thm:subobject-classifier}
+  $\COMMA{\FF}{F}$ has a subobject classifier.
+\end{theorem}
+A sketch of this proof is given in \textcite[A2.1.12]{johnstone:2002}, and it is posed as an
+exercise several textbooks~\parencite{maclane-moerdijk:1992,taylor:1999}. The classical reference is
+\textcite{sga:4}, and it is implicit in \eg{} \textcite{wraith:1974}. When concerned only with
+Grothendieck toposes, it is perhaps simpler to work only with the Giraud axioms.
+
+\begin{proof}[Proof of \cref{thm:subobject-classifier}]
+
+  First, we observe that there is a relationship between $F(\Omega_\EE)$ and $\Omega_\FF$ because
+  $F$ is left exact, and therefore preserves monomorphisms. In particular,
+  $\EmbMor[\top]{F(1)}{F(\Omega_\EE)}$ is a monomorphism, and therefore there is a classifying map
+  $\phi$ which fits into the following pullback square:
+  \[
+    \DiagramSquare{
+      nw = F(1),
+      nw/style = pullback,
+      ne = 1,
+      sw = F(\Omega_\EE),
+      se = \Omega_\FF,
+      south = \phi,
+      east = \top,
+      west = F(\top),
+    }
+  \]
+  Next, we can use this morphism to define the following object (in $\FF$):
+  \[
+    Q = \{\gls{p,q} : \Omega_\FF \times F(\Omega_\EE) \mid p \le \phi(q) \}
+  \]
+  If one wishes to avoid the internal logic, an explicit pullback is easily constructed (and given
+  in \textcite{johnstone:2002}). We claim that
+  $\Omega_{\COMMA{\FF}{F}} = \Mor[\pi_2]{Q}{F(\Omega_\EE)}$ with $\top = \gls{\top,F(\top)}$.
+
+  In order to show that this is the case, suppose that there is a monomorphism between
+  $(\Mor[f_i]{B_i}{F(A_i)})_{i \in \{0,1\}}$, that is, a pair $\EmbMor[m_1]{B_0}{B_1}$ and
+  $\EmbMor[m_0]{A_0}{A_1}$ such that $F(m_0) \circ f_0 = f_1 \circ m_1$. Now, we wish to construct a
+  characteristic morphism for this subobject. First, we pick $c_0 = \chi_{m_0}$, a morphism
+  $\Mor{A_1}{\Omega_\EE}$. We cannot simply do the same for the ``upper'' morphism, because the
+  upstairs is $Q$, not $\Omega_\FF$. We will show that the following composition factors through
+  $Q$:
+  \[
+    \begin{tikzpicture}[diagram, node distance = 4cm]
+      \node (A) {$B_1$};
+      \node [right = of A] (B) {$B_1 \times F(A_1)$};
+      \node [right = 5cm of B] (C) {$\Omega_\FF \times F(\Omega_\EE)$};
+      \path[->] (A) edge node[above] {$\IdArr \times f_1$} (B);
+      \path[->] (B) edge node[above] {$\chi_{m_1} \times F(c_0)$} (C);
+      \path[bend right=15, ->] (A) edge node[below] {$c_1$} (C);
+    \end{tikzpicture}
+  \]
+  In order to show this, we will show that $m_1 \le (\phi \circ F(c_0) \circ f_1)^*(\top)$ in
+  $\SUB{B_1}$. We observe that $\phi^*(\top) = F(\top)$ by definition, and $c_0^*(\top) =
+  m_0$. Using the fact that $F$ is lex, this means that $(\phi \circ F(c_0))^*(\top) = F(m_0)$. From
+  this, it is easy to check that $m_1 \le f_1^*(F(m_0))$ using the universal property of this
+  pullback. Moreover, we have $\pi_2 \circ c_1 = c_0 \circ f_1$ by definition. It therefore remains
+  to check that (1.) this is indeed the characteristic map of $(m_0,m_1)$ and (2.) that it is unique
+  with this property.
+
+  For this first point, it is clear that $c_0^*(F(\top)) = F(m_0)$, so we merely need to show that
+  the ``upper'' pullback square holds. That is, we must show the following:
+  \[
+    \DiagramSquare{
+      nw = B_0,
+      nw/style = pullback,
+      ne = 1,
+      sw = B_1,
+      se = Q,
+      south = c_1,
+      east = \gls{\top,F(\top)},
+      west = m_1,
+    }
+  \]
+  Calculating, the pullback of this diagram can be written in the internal logic as follows:
+  \[
+    \{b : B_1 \mid \chi_{m_1}(b) = \top \wedge \chi_{m_0}(f_1(b)) = F(\top)\}
+  \]
+  From the first requirement, we may replace $B_1$ with $B_0$:
+  $\{b : B_0 \mid F(\chi_{m_0})(f_1(b)) = F(\top)\}$, which is isomorphic to $B_0$. That is, for any
+  $b : B_0$, $F(\chi_{m_0})(f_1(b)) = F(\top)$. This follows from the assumption that
+  $F(m_0) \circ f_0 = f_1 \circ m_1$
+
+  It remains to check that this characteristic map is unique with this property. The unicity of
+  $c_0$ is immediate from the corresponding unicity of characteristic maps in $\EE$. For the unicity
+  of $c_1$, we observe that any other such map, $c_1'$, must be expressible as
+  $\gls{c_{11}',c_{10}'}$, and $\pi_2 \circ c_1' = c_{10}'$ is forced by the fact that
+  $c_1' = c_0 \circ f_1$. Finally, $c_{11}'$ is also unique, using the unicity of characteristic
+  maps in $\FF$, completing the proof.
+\end{proof}
+
+\printbibliography
+\end{document}

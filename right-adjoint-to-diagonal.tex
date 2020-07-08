@@ -1,0 +1,152 @@
+\documentclass{amsart}
+\usepackage{preamble,categories,macros,}
+\usepackage{locallabel,pftools}
+\usepackage{jmsdelim}
+\usepackage{jon-tikz}
+
+\addbibresource{refs.bib}
+
+\title{Limits are right adjoint to the diagonal}
+\author{Daniel Gratzer}
+\email{gratzer@cs.au.dk}
+\address{Aarhus, Denmark}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+  An explicit proof that the right adjoint to the diagonal functor is the limit functor.
+\end{abstract}
+\maketitle
+
+First, we take a moment to recall the basic notions in the proposition. Let us fix $\DD$ a small
+category, and $\CC$ a category with all $\DD$-limits (that is, every diagram indexed by $\DD$ has a
+limit).
+\begin{notation}
+  By convention, we write $\pi_d$ for the projection $\Mor{\Lim_{d : \DD} F(d)}{F(d)}$. When there
+  is risk of confusion, we will write $\pi_d^F$.
+\end{notation}
+
+\begin{definition}[Limit functor]
+  \label{def:lim}
+  The limit functor (for diagrams of shape $\DD$), $\Lim_\DD : \CC^{\DD} \to \CC$ sends a diagram
+  $F : \DD \to \CC$ to its limit in $\CC$. The action on morphisms is the morphism induced by the
+  universal properties of limits.
+
+  More explicitly, if $F_0$ and $F_1$ are two diagrams, and $\Mor[\alpha]{F_0}{F_1}$ is a natural
+  transformation between them, then the following family $(f_d)_{d:\DD}$ makes $\Lim_D F_0$ a cone
+  over $F_1$:
+  %
+  \begin{equation*}
+    \begin{tikzpicture}[diagram, node distance = 3cm]
+      \node (A) {$\Lim_\DD F_0$};
+      \node [right=of A] (B) {$F_0(d)$};
+      \node [right=of B] (C) {$F_1(d)$};
+      \path[->] (A) edge node {} (B);
+      \path[->] (B) edge node[below] {$\alpha_d$} (C);
+      \path[->, bend left] (A) edge node[above] {$f_d$} (C);
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  This cone, together with the universal property of $\Lim_{\DD} F_1$, induces a morphism
+  $\Lim_{\DD} F_0 \to \Lim_{\DD} F_1$, which we call $\Lim_{\DD} \alpha$. This morphism is unique
+  with the following property:
+  \[
+    \forall d : \DD.\ \pi_d \circ \Lim_{\DD} \alpha = \alpha_d \circ \pi_d : \Hom{\Lim_\DD F_0}{F_1(d)}
+  \]
+\end{definition}
+
+\begin{definition}[Diagonal functor]
+  \label{def:diagonal}
+  The diagonal functor $\Disc : \CC \to \CC^\DD$ sends an object $C$ to the constant functor:
+  \[
+    \Disc(C)(d) = C \qquad\qquad \Disc(C)(f) = 1_C
+  \]
+  $\Disc$ sends a morphism to a natural transformation which is $f$ at every leg:
+  \[
+    \Disc(f)_d = f
+  \]
+\end{definition}
+
+\begin{definition}
+  \label{def:cone}
+  A cone over a functor $\Mor[F]{\DD}{\CC}$ is a pair of an object and a family of morphisms
+  $(C, (\Mor[f_d]{\CC}{F(d)})_{d : \DD})$ satisfying the additional condition that for all
+  $\Mor[\delta]{d'}{d}$, $f_{d'} = F(\delta) \circ f_d$. We shall say that such a cone has apex
+  $C$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:cone-to-nat-transform}
+  The set of cones over $F$ with apex $C$ is in bijection with $\Hom{\Disc(C)}{F}$.
+\end{lemma}
+\begin{proof}
+  This follows by unfolding definitions. A natural transformation is precisely a morphism between
+  $\Disc(C)$ and $F$ is a family of morphism $\Mor[f_d]{C}{F(d)}$ satisfying the naturality condition
+  \[
+    f_{d'} \circ \Disc(C)(\delta) = F(\delta) \circ f_d
+  \]
+  However, by \cref{def:diagonal} $\Disc(C)(\delta) = 1_C$, so this is the expected
+  $f_{d'} = F(\delta) \circ f_d$ from \cref{def:cone}.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:mor-to-cone}
+  $\Hom{C}{\Lim_\DD F}$ is isomorphic to the set of $F$-cones over with $C$ as an apex.
+\end{lemma}
+\begin{proof}
+  In order to verify this claim, recall the universal property of $\Lim_{\DD} F$: every cone over
+  $F$, $(X, (f_d)_{d : \DD})$ determines a unique morphism $\Mor[u]{X}{\Lim_\DD F}$ such that
+  $\pi_d \circ u = f_d$. Therefore, the morphism which sends each $F$ cone $(C, (f_d)_{d : \DD})$ to
+  its unique morphism $\Mor{C}{\Lim_\DD F}$ gives an injection into $\Hom{C}{\Lim_\DD F}$. It
+  suffices to show that this injection is surjective.
+
+  Given a morphism $\Mor[u]{C}{\Lim_\DD F}$, there is a cone $(C, (g_d)_{d : \DD})$ defined by
+  $g_d = \pi_d \circ u$. Observe that $u$ defines a morphism $\Mor{C}{\Lim_\DD F}$ such that
+  $g_d = \pi_d \circ u$ by construction. Therefore, $u$ is in the image of our injection and since
+  $u$ was arbitrary, this injection is a bijection.
+\end{proof}
+
+\begin{theorem}
+  $\Disc \Adjoint \Lim_\DD$
+\end{theorem}
+\begin{remark}
+  The right adjoint to $\Disc$ is characterized up to unique isomorphism by this
+  property. Therefore, proving this ensures that not only \emph{if} $\Lim_\DD$ exists, it is the
+  right adjoint to $\Disc$. It also shows that whenever the right adjoint to $\Disc$ exists,
+  $\Lim_\DD$ exists and this right adjoint is isomorphic to $\Lim_\DD$.
+\end{remark}
+\begin{proof}
+  We will show that this by constructing a natural bijection of hom-sets:
+  \[
+    \Hom{\Disc(C)}{F} \cong \Hom{C}{\Lim_\DD F}
+  \]
+  First, observe by \cref{lem:cone-to-nat-transform}, that $\Hom{\Disc(C)}{F}$ is isomorphic to the
+  set of cones over $F$ with apex $C$. However, by \cref{lem:mor-to-cone}, the set of these cones is
+  also isomorphic to $\Hom{C}{\Lim_\DD F}$. Composing these isomorphisms gives the desired
+  isomorphism $\iota_{C,F} : \Hom{C}{\Lim_\DD F} \cong \Hom{\Disc(C)}{F}$. Explicitly, this sends a
+  morphism $\Mor[u]{C}{\Lim_\DD F}$ to the natural transformation $(\pi_d \circ u)_{d : \DD}$.
+
+  It therefore remains to check that this is natural in both $C$ and $F$. Suppose we have
+  $\Hom[c]{C'}{C}$ and $u \in \Hom{C}{\Lim_\DD F}$. We wish to show that
+  $\iota_{C,F}(u) \circ \Disc(f) = \iota_{C',F}(u \circ c)$. Unfolding definitions on both sides, we
+  see that this requires that that the families $((\pi_d \circ u) \circ f)_d$ and
+  $(\pi_d \circ (u \circ f))_d$ are equal, which is immediate.
+
+  For naturality in $F$, suppose we have a natural transformation $\Mor[\phi]{F'}{F}$ and
+  $u \in \Hom{C}{\Lim_\DD F}$. We wish to verify that
+  $\phi \circ \iota_{C,F}(u) = \iota_{C,F'}(\Lim_\DD \phi \circ u)$. In order to compute this,
+  recall from the \cref{def:lim} that $\pi_d^{F'} \circ \Lim_\DD \phi = \phi_d \circ \pi_d^F$.
+  Using this fact, we may calculate:
+  \[
+    \iota_{C,F'}(\Lim_\DD \phi \circ u) =
+    (\pi_d^{F'} \circ \Lim_\DD \phi \circ u)_{d : \DD} =
+    (\phi_d \circ \pi_d^F \circ u)_{d : \DD}
+  \]
+  On the other hand, we may reduce $\phi \circ \iota_{C,F}(u)$ to
+  $(\phi_d \circ \pi_d^F \circ u)_{d : \DD}$.
+\end{proof}
+
+\printbibliography
+
+\end{document}

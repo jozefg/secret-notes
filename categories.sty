@@ -1,0 +1,87 @@
+\NewDocumentCommand{\Dom}{}{\mathsf{dom}}
+\NewDocumentCommand{\Cod}{}{\mathsf{cod}}
+\NewDocumentCommand{\IdArr}{O{}}{\mathsf{id}_{#1}}
+
+\NewDocumentCommand{\Hom}{O{} m m}{\brackets*{#2, #3}_{#1}}
+\NewDocumentCommand{\Adjoint}{}{\dashv}
+\NewDocumentCommand{\TT}{}{\mathbb{T}}
+\NewDocumentCommand{\CC}{}{\mathcal{C}}
+\NewDocumentCommand{\DD}{}{\mathcal{D}}
+\NewDocumentCommand{\EE}{}{\mathcal{E}}
+\NewDocumentCommand{\FF}{}{\mathcal{F}}
+\NewDocumentCommand{\GG}{}{\mathcal{G}}
+\RenewDocumentCommand{\SS}{}{\mathcal{S}}
+\NewDocumentCommand{\VV}{}{\mathcal{V}}
+\NewDocumentCommand{\UU}{}{\mathcal{U}}
+\NewDocumentCommand{\NN}{}{\mathcal{N}}
+\NewDocumentCommand{\II}{}{\mathcal{I}}
+\NewDocumentCommand{\SET}{}{\mathbf{Set}}
+\NewDocumentCommand{\SSET}{}{\mathbf{sSet}}
+\NewDocumentCommand{\FAM}{}{\mathbf{Fam}}
+\NewDocumentCommand{\CAT}{}{\mathbf{Cat}}
+\NewDocumentCommand{\POSET}{}{\mathbf{Pos}}
+\NewDocumentCommand{\CUBE}{}{\square}
+\NewDocumentCommand{\SIMP}{}{\Delta}
+\NewDocumentCommand{\PSH}{O{}m}{\mathbf{PSh}_{#1}(#2)}
+\NewDocumentCommand{\SH}{mo}{\mathbf{Sh}\IfValueTF{#2}{(#1; #2)}{(#1)}}
+\NewDocumentCommand{\Cov}{}{\mathcal{J}}
+\NewDocumentCommand{\EL}{m}{\textstyle\int #1}
+\NewDocumentCommand{\ARR}{m}{#1^{\rightarrow}}
+\NewDocumentCommand{\COSLICE}{m m}{#1 \backslash #2}
+\NewDocumentCommand{\SLICE}{m m}{#1 / #2}
+\NewDocumentCommand{\SUB}{m}{\mathbf{Sub}(#1)}
+\NewDocumentCommand{\COMMA}{m m}{(#1 \downarrow #2)}
+\NewDocumentCommand{\GL}{m}{\mathbf{Gl}(#1)}
+\NewDocumentCommand{\Op}{m}{{#1}^{\mathsf{op}}}
+\NewDocumentCommand{\Co}{m}{{#1}^{\mathsf{co}}}
+\NewDocumentCommand{\Coop}{m}{{#1}^{\mathsf{coop}}}
+\NewDocumentCommand{\Yo}{g}{\mathbf{y}\IfValueT{#1}{(#1)}}
+\NewDocumentCommand\YoEm{G{-}}{
+  \mathchoice{%
+    \mleft\lfloor\mkern-2mu{#1}\mkern-2mu\mright\rfloor
+  }{%
+    \mleft\lfloor\mkern-2mu{#1}\mkern-2mu\mright\rfloor
+  }{%
+    \lfloor #1 \rfloor%
+  }{%
+    \lfloor #1 \rfloor%
+  }%
+}
+\NewDocumentCommand\YoUnem{G{-}}{
+  \mleft\lceil\mkern-2mu{#1}\mkern-2mu\mright\rceil
+}
+\NewDocumentCommand{\Equiv}{}{\simeq}
+\NewDocumentCommand{\ToSh}{g}{\mathbf{a}\IfValueT{#1}{(#1)}}
+\NewDocumentCommand{\ToPSh}{g}{\mathbf{i}\IfValueT{#1}{(#1)}}
+
+\NewDocumentCommand{\Whisker}{}{\mathop{\star}}
+\NewDocumentCommand{\Transpose}{m}{\widehat{#1}}
+\NewDocumentCommand{\Ev}{}{\mathbf{ev}}
+\NewDocumentCommand{\Pre}{smm}{#2^*\IfBooleanTF{#1}{\parens{#3}}{#3}}
+\NewDocumentCommand{\LKan}{smm}{#2_{{!}}\IfBooleanTF{#1}{\parens{#3}}{#3}}
+\NewDocumentCommand{\RKan}{smm}{#2_{{*}}\IfBooleanTF{#1}{\parens{#3}}{#3}}
+\NewDocumentCommand{\ReIdx}{smm}{\IfBooleanTF{#1}{\parens*{#2}}{#2}^{-1}\parens*{#3}}
+\NewDocumentCommand{\To}{}{\Rightarrow}
+\NewDocumentCommand{\Poly}{mg}{\mathbf{P}_{#1}\IfValueT{#2}{(#2)}}
+
+\NewDocumentCommand{\Nv}{g}{\mathbf{n}\IfValueT{#1}{(#1)}}
+
+%% Freyd's puncture symbol to mark an non-commutative loop.
+\NewDocumentCommand{\Puncture}{}{%
+  {\setbox0\hbox{A}\vrule height.53\ht0 depth-.47\ht0 width.35\ht%
+    0 \kern.12\ht0 \vrule height\ht0 depth-.65\ht0 width.06\ht0 \kern-.06\ht0%
+    \vrule height.35\ht0 depth0pt width.06\ht0 \kern.12\ht0 \vrule height.53\ht0%
+    depth-.47\ht0 width.35\ht0 }}
+
+\makeatletter
+\newcommand{\colim@}[2]{%
+  \vtop{\m@th\ialign{##\cr
+    \hfil$#1\operator@font colim$\hfil\cr
+    \noalign{\nointerlineskip\kern1.5\ex@}#2\cr
+    \noalign{\nointerlineskip\kern-\ex@}\cr}}%
+}
+\newcommand{\Colim}{%
+  \mathop{\mathpalette\colim@{\rightarrowfill@\scriptscriptstyle}}\nmlimits@
+}
+\newcommand{\Lim}{\mathop{\mathpalette\varlim@{\rightarrowfill@\scriptscriptstyle}}\nmlimits@}
+\makeatother

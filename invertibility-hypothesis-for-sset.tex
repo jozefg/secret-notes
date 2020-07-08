@@ -1,0 +1,123 @@
+\documentclass{amsart}
+\usepackage{preamble,categories,macros,}
+\usepackage{locallabel,pftools}
+\usepackage{jmsdelim}
+\usepackage{jon-tikz}
+
+\addbibresource{refs.bib}
+
+\title{The Invertibility Hypothesis in \texorpdfstring{$\SSET$}{Simplicial Sets}}
+\author{Daniel Gratzer}
+\date{\today}
+
+
+\begin{document}
+\begin{abstract}
+  A confusingly simple proof of the invertibility hypothesis for $\SSET$. The proof centers around
+  an analysis of a few key homotopy pushouts.
+\end{abstract}
+\maketitle
+
+Throughout this note, we will work with the left-proper combinatorial model structure described by
+Lurie on categories enriched over some suitably nice monoidal model category~\parencite{lurie:2009}.
+
+\begin{property}
+  \label{prop:invertibility}
+  Given a combinatorial left-proper monoidal model category $\SS$, we say that $\SS$ satisfies the
+  invertibility hypothesis if, given an $\SS$-category $\CC$ and a cofibration
+  $\EmbMor[f]{[1]_\SS}{\CC}$ whose image is an equivalence in $\CC$, the right-hand map of the
+  following pushout is a weak equivalence:
+  \[
+    \DiagramSquare{
+      nw = [1]_\SS,
+      ne = \CC,
+      sw = [1]_{\widetilde{\SS}},
+      se = \CC[f^{-1}],
+      se/style = pushout,
+      north = f,
+      north/style = embedding
+    }
+  \]
+  Here, we make use of the distinguished $\SS$-categories $[1]_{\SS}$ and $[1]_{\widetilde{\SS}}$. Both
+  have two objects $x$ and $y$. In $[1]_{\SS}$, there is precisely one morphism $\Mor{x}{y}$ and no
+  morphism $\Mor{y}{x}$. In $[1]_{\widetilde{\SS}}$, pair of a homotopy inverse morphisms $\Mor{x}{y}$
+  and $\Mor{y}{x}$.
+\end{property}
+
+Intuitively, this property says that when working with a simplicial category as a model for some
+$(\infty,1)$-category, we may turn a weak equivalence into a true homotopy equivalence without
+affecting the homotopy type of the category. Obviously, this could be very useful in practice since
+it allows us a degree of strictness we would otherwise lack. For instance \textcite{lurie:2009}
+crucially uses this property of obtain a direct characterization of the fibrations of model
+structure on simplicial categories.
+
+We are concerned with showing that $\SSET$ with the Kan-Quillen model structure enjoys this
+property. The traditional reference for this is \parencite{dwyer:1980}, but this is slightly
+unsatisfying for two reasons. Firstly, \textcite{dwyer:1980} are concerned only with simplicial
+categories with a fixed set of objects, making it difficult to relate to the category of simplicial
+categories. Additionally, the reference shows its age in its choice of terminology and technical
+approaches.
+
+The following proof seems to establish the desired result, but appears considerably simpler. To the
+extend that I'm slightly suspicious it's correct!
+\begin{theorem}
+  $\SSET$ enjoys \cref{prop:invertibility}.
+\end{theorem}
+\begin{proof}
+  Let us fix $\CC$ and $f$ as in the statement of \cref{prop:invertibility}.  Firstly, we follow the
+  advice of \citeauthor{lurie:2009} restrict our attention to the case where $\CC$ is fibrant and
+  split $\Mor{[1]_{\SSET}}{[1]_{\widetilde{\SSET}}}$ into a cofibration followed by a trivial
+  fibration. In particular, we obtain some $E$ with $\EmbMor{[1]_{\SSET}}{E}$ such with
+  $\CovMor[\sim]{E}{[1]_{\widetilde{\SSET}}}$. We can in fact choose $E$ to be the category with two
+  objects $x$ and $y$, three morphisms $\Mor[f]{x}{y}$ and $\Mor[g,g']{y}{x}$ together with 2
+  2-cells making $g$ left-inverse to $f$ and $g'$ right-inverse. This is not a fibrant object on its
+  own, but this is unimportant.
+
+  In fact, all that matters is that inclusion $\Mor{[1]_{\SSET}}{E}$ is a cofibration and the map
+  $\Mor{E}{[1]_{\widetilde{\SSET}}}$ is a weak equivalence. The first map is a cofibration because
+  it is injective on all hom-spaces and bijective on objects. Moreover, the map $\Mor{E}{[1]_\SSET}$
+  is a weak equivalence because it's bijective on objects and a weak equivalence on each hom-set
+  (inverses are unique up to homotopy, so each hom-space is contractible).
+
+  Now, we first take the pushout of $f$ along $\EmbMor{[1]_{\SSET}}{E}$ to obtain the following:
+  \[
+    \DiagramSquare{
+      nw = [1]_\SSET,
+      ne = \CC,
+      sw = E,
+      se = \CC\gls{f^{-1}},
+      east = e,
+      se/style = pushout,
+      north = f,
+      north/style = embedding,
+      south/style = embedding
+    }
+  \]
+  In fact, $\Mor[e]{\CC}{\CC\gls{f^{-1}}}$ is a weak equivalence. We first observe that $e$ is
+  bijective on objects. Next, it is an identity for every hom-space except
+  $\Mor{\Hom[\CC]{x}{y}}{\Hom[\CC\gls{f^{-1}}]{x}{y}}$, which is attaches the extra left and right
+  inverse to $f$. However, by assumption $f$ was already an equivalence, and thus possessed a left
+  and right inverse already. Since inverses are unique up to homotopy, there is a deformation
+  retract to this inclusion, so it is a weak equivalence of simplicial sets as well. This implies
+  that $e$ is a weak equivalence.
+
+  Next, we take the pushout of $\Mor{E}{\CC\gls{f^{-1}}}$ along $\Mor{E}{[1]_{\widetilde{\SSET}}}$:
+  \[
+    \DiagramSquare{
+      nw = E,
+      ne = \CC\gls{f^{-1}},
+      sw = [1]_{\widetilde{\SSET}},
+      se = \CC[f^{-1}],
+      se/style = pushout,
+      north = f,
+      north/style = embedding,
+    }
+  \]
+  Recall that simplicial sets are a left-proper model category, and therefore because
+  $\Mor{E}{[1]_{\widetilde{\SSET}}}$ is a weak equivalence, so too is
+  $\Mor{\CC\gls{f^{-1}}}{\CC[f^{-1}]}$. Therefore, by 2-out-of-three $\Mor{\CC}{\CC[f^{-1}]}$ is a
+  weak equivalence.
+\end{proof}
+
+\printbibliography
+\end{document}

@@ -1,0 +1,195 @@
+\documentclass[reqno]{amsart}
+\usepackage{preamble,categories,macros}
+\usepackage{locallabel,pftools}
+\usepackage{jmsdelim}
+\usepackage{jon-tikz}
+
+\addbibresource{refs.bib}
+
+\NewDocumentCommand{\Ind}{og}{\IfValueT{#1}{#1\textnormal{-}}\mathbf{Ind}\IfValueT{#2}{(#2)}}
+\NewDocumentCommand{\Cont}{ommg}{[#2,#3]_{\IfValueT{#1}{#1\textnormal{-}}\mathsf{cont}\IfValueT{#4}{\mathsf{,#4}}}}
+\NewDocumentCommand{\CoCont}{ommg}{[#2,#3]_{\IfValueT{#1}{#1\textnormal{-}}\mathsf{cocont}\IfValueT{#4}{\mathsf{,#4}}}}
+\NewDocumentCommand{\PRES}{}{\mathbf{Pres}}
+\NewDocumentCommand{\LOGOS}{}{\mathbf{Logos}}
+\NewDocumentCommand{\TOPOS}{}{\mathbf{Topos}}
+
+\title{The Tensor Product of Locally Presentable Categories and Grothendieck Topoi}
+\author{Daniel Gratzer}
+\email{gratzer@cs.au.dk}
+\address{Aarhus, Denmark}
+\date{\today}
+
+\begin{document}
+\begin{abstract}
+  This note contains a definition and few elementary results for a symmetric tensor product of
+  topoi. No single source seems to collect these basic definitions into one place, so we focus on
+  establishing the core properties of this tensor rather than accumulating a great many specialized
+  results.
+\end{abstract}
+
+\maketitle
+
+We rely on \textcite{adamek-rosicky:1994} for the definition of locally presentable categories and
+on \textcite{anel:2019} for the definition of a logos. The latter mentions the following
+constructions briefly as well as motivation for them, but does not provide a fully worked account of
+their basic properties.
+
+\begin{definition}
+  \label{def:tensor}
+  Given two locally presentable categories $\EE$ and $\FF$, set
+  $\EE \otimes \FF = \Cont[\kappa]{\Op{\EE}}{\FF}$
+\end{definition}
+
+This definition is utterly inscrutable on first encounter, but let us observe one crucial fact
+which explains its existence:
+
+\begin{theorem}
+  \label{def:stable}
+  $\otimes$ is stable under equivalence in both arguments.
+\end{theorem}
+
+As we shall see, there are several different ways we could have defined $\otimes$, but these more
+intuitive definitions rely on particular presentations of $\EE$ and $\FF$ as
+$\Ind[\kappa](A)$ or (when we are working with Grothendieck topoi) as $\SH{\CC}[J]$. These
+presentations are not canonical, so a definition directly reliant on them would be difficult to
+prove stable under equivalence.
+
+Perhaps the most important case to study in order to grasp the behavior of \cref{def:tensor} is when
+$\EE$ and $\FF$ are both of the form $\PSH{\CC_i}$:
+\begin{example}
+  $\PSH{\CC_0} \otimes \PSH{\CC_1} \Equiv \PSH{\CC_0 \times \CC_1}$.
+\end{example}
+\begin{proof}
+  First, observe that $\Cont{\Op{\PSH{\CC_0}}}{\PSH{\CC_1}}$ is equivalent to
+  $\Manual{[\PSH{\CC_0},\Op{\PSH{\CC_1}}]^{\mathsf{op}}_{\mathsf{cocont}}}$. We can reduce this last term to
+  $\Op{\Hom{\CC_0}{\Op{\PSH{\CC_1}}}} \Equiv \Hom{\Op{\CC_0}}{\PSH{\CC_1}}$ using the universal
+  property of $\PSH{-}$ as a free cocompletion. Now currying, we have the conclusion:
+  \[
+    \Hom{\Op{\CC_0}}{\PSH{\CC_1}}
+    \Equiv \Hom{\Op{(\CC_0 \times \CC_1)}}{\SET}
+    \Equiv \PSH{\CC_0 \times \CC_1} \qedhere
+  \]
+\end{proof}
+
+As a first proper result, we show that if $\EE$ and $\FF$ are locally presentable (resp. logoi) then
+so too is $\EE \otimes \FF$.
+
+\begin{theorem}
+  \label{thm:locally-presentable}
+  If $\EE$ and $\FF$ are locally presentable, so too is $\EE \otimes \FF$.
+\end{theorem}
+\begin{proof}
+  First, observe that $\EE = \Ind[\kappa]{\CC}$, for a small category $\CC$ which is cocomplete for
+  $\kappa$ limits. Therefore, $\Cont{\Op{\EE}}{\FF} \Equiv \Cont[\kappa]{\Op{\CC}}{\FF}$, using the
+  universal property of $\Ind[\kappa]$ completions. Without loss of generality, we may assume that
+  $\FF = \Ind[\kappa]{\DD}$ (raising the index of $\EE$ if necessary). Since limits in
+  $\Ind[\kappa]{\DD}$ are formed pointwise, we have
+  $\Cont[\kappa]{\Op{\CC}}{\FF} \Equiv \Cont[\kappa]{\Op{\CC} \times \Op{\DD}}{\SET}$. Now, this is
+  in turn equivalent to $\Cont[\kappa]{\Op{(\CC \times \DD)}}{\SET}$ so it suffices to show that
+  this is locally presentable, but this follows from the representation theorem of locally
+  presentable categories~\parencite[Theorem 1.46]{adamek-rosicky:1994}.
+\end{proof}
+
+\begin{theorem}
+  \label{thm:logos}
+  If $\EE$ and $\FF$ are logoi, so too is $\EE \otimes \FF$.
+\end{theorem}
+\begin{proof}
+  Again, pick presentations of $\EE$ and $\FF$ as $\SH{\CC}[J]$ and $\SH{\DD}[K]$. First, we observe
+  that $\Cont{\Op{\EE}}{\FF} \Equiv \Cont[J]{\Op{\CC}}{\FF}$ with the right-hand side being the set
+  of functor $\Mor{\Op{\CC}}{\FF}$ which send a sieve of $J$ to a limit diagram in $\FF$, a detailed
+  explanation of this refinement of the standard universal property of free cocompletions is given
+  in \textcite[Corollary VII.7.4]{maclane-moerdijk:1992}.\footnote{The notation here is horribly
+    clashing with many standard sources, including \parencite{maclane-moerdijk:1992}. However, as
+    noted by Johnstone, the notation is uniformly confusing in any case.} Now, we unfold $\FF$ in
+  order to apply currying, just as in \cref{thm:locally-presentable} and consider
+  $\Cont[J]{\Op{\CC}}{\SH{\DD}[K]}$. Limits are taken pointwise, so this is some subset of functors
+  $\Mor{\Op{(\CC \times \DD)}}{\SET}$. In fact, with the observation that sheaves are precisely
+  functors which take sieves to limit diagrams of sets and that limits commute with limits, this is
+  precisely the set of sieves for $J \times K$, where
+  \[
+    (J \times K)(C,D) = \bigcup_{\substack{S \in J(C) \\ T \in K(D)}} \{\Mor[(f,g)]{(C',D')}{(C,D)} \mid f \in S(C') \land g \in T(D')\}
+  \]
+  Therefore $\EE \otimes \FF \Equiv \SH{\CC \times \DD}[J \times K]$ which is clearly a logos.
+\end{proof}
+
+We wish to show that these constructions are appropriately functorial, but this is cumbersome to
+show directly. Instead, we will establish pseudofunctoriality \emph{en passant} by showing that
+$\EE \otimes \FF$ enjoys an appropriate universal property akin to the universal property of the
+familiar tensor product from linear algebra.
+
+\begin{theorem}
+  \label{thm:locally-presentable-functorial}
+  Given the locally presentable categories $\EE$, $\FF$, $\GG$, the subcategory of functor
+  $\Hom{\EE \times \FF}{\GG}$ which are cocontinuous in both $\EE$ and $\FF$ is equivalent to the
+  category $\CoCont{\EE \otimes \FF}{\GG}$.
+\end{theorem}
+\begin{proof}
+  First, let us observe that $F \in \Hom{\EE \times \FF}{\GG}$ which is cocontinuous in both
+  variables is uniquely determined as an element of $\CoCont{\EE}{\CoCont{\FF}{\GG}}$ (and in fact
+  this is part of an equivalence of categories). Therefore, it suffices to prove
+  $\CoCont{\EE}{\CoCont{\FF}{\GG}} \Equiv \CoCont{\EE \otimes \FF}{\GG}$. We will prove this by
+  chaining together a series of equivalences~\parencite{nlab:presentable-infinity-category}:
+  \begin{align*}
+    \CoCont{\EE}{\CoCont{\FF}{\GG}}
+    &\Equiv \CoCont[\kappa]{\CC}{\CoCont{\FF}{\GG}}
+    && \text{Presenting $\EE = \Ind[\kappa]{\CC}$}\\
+    &\Equiv [\Op{\CC}, [\FF,\GG]_{\mathsf{cocont}}^{\mathsf{op}}]_{\kappa\textnormal{-}\mathsf{cont}}^{\mathsf{op}}\\
+    &\Equiv [\Op{\CC}, \Cont{\GG}{\FF}{acc}]_{\kappa\textnormal{-}\mathsf{cont}}^{\mathsf{op}}
+    &&\text{Special adjoint functor theorem}\\
+    &\Equiv [\GG, \Cont[\kappa]{\Op{\CC}}{\FF}]_{\mathsf{cont,acc}}^{\mathsf{op}}
+      \TagEq[$\dagger$]
+      \label{eq:commutation}\\
+    &\Equiv [\GG, \Cont{\Op{\EE}}{\FF}]_{\mathsf{cont,acc}}^{\mathsf{op}}\\
+    &\Equiv \CoCont{\Cont{\Op{\EE}}{\FF}}{\GG}
+    && \text{Special adjoint functor theorem}\\
+    &\Equiv \CoCont{\EE \otimes \FF}{\GG}
+  \end{align*}
+  The main subtlety is \cref{eq:commutation}, which requires us to show a certain commutation of
+  limits property. In particular, suppose $F \in \Hom{\Op{\CC} \times \GG}{\FF}$. We wish to show
+  that the following conditions are equivalent:
+  \begin{enumerate}
+  \item $F(c,-)$ is continuous and accessible and $F(-,e)$ preserves $\kappa$ limits.
+  \item $F(-,e)$ is $\kappa$-continuous, $F(d,-)$ is continuous, and $e \mapsto F(-,e)$ is
+    accessible.
+  \end{enumerate}
+  First, recall that if $\mu > \kappa$, then $\mu$-filtered colimits commute with $\kappa$
+  limits. Therefore, showing that $e \mapsto F(-,e)$ is accessible for some $\mu > \kappa$ (as in
+  (2.)) is equivalent to showing that $F(c,-)$ is $\mu$-accessible for all $c$. In order to show
+  that (1.) is equivalent to (2.), therefore, we must show that if each $F(c,-)$ is
+  $\mu_c$-accessible, then there exists a single $\mu$ such that $F(c,-)$ is $\mu$-accessible for
+  all $c$. Since $\CC$ is a small category, we may take $\mu = \bigvee_{c} \mu_c$ for the desired
+  equivalence.
+\end{proof}
+\begin{corollary}
+  $\otimes$ is the coproduct of locally presentable categories.
+\end{corollary}
+\begin{corollary}
+  There exists a map $\Mor{\EE \times \FF}{\EE \otimes \FF}$ cocontinuous in both variables.
+\end{corollary}
+\begin{corollary}
+  $\otimes$ is pseudofunctorial in both arguments.
+\end{corollary}
+
+\begin{theorem}
+  \label{thm:logos-functorial}
+  Given the logoi $\EE$, $\FF$, $\GG$, the subcategory of functor $\Hom{\EE \times \FF}{\GG}$ which
+  are lex and cocontinuous in both $\EE$ and $\FF$ is equivalent to
+  $\CoCont{\EE \otimes \FF}{\GG}{lex}$.
+\end{theorem}
+\begin{proof}
+  Using the computations in \cref{thm:logos}, it is sufficient to show to check this assuming that
+  $\EE = \SH{\CC}[J]$ and $\FF = \SH{\DD}[K]$. Furthermore, we may assume without loss of generality
+  that both $\CC$ and $\DD$ are finitely complete (a corollary of the proof of the Giraud axioms
+  capture logoi~\parencite{maclane-moerdijk:1992}). Under these assumptions, a lex cocontinuous functor
+  $\Mor[F]{\EE \otimes \FF}{\GG}$ is uniquely determined as a $(J \times K)$-continuous lex functor
+  $\Mor[F']{\CC \times \DD}{\GG}$. Furthermore, because $F'$ is left-exact (and in particular
+  preserves finite products), it is uniquely determined by an element of
+  $\Cont[J]{\CC}{\GG}{lex}$ and $\Cont[K]{\DD}{\GG}{lex}$. From this, the result follows.
+\end{proof}
+\begin{corollary}
+  $\otimes$ is the coproduct of logoi.
+\end{corollary}
+
+\printbibliography
+\end{document}

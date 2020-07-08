@@ -1,0 +1,219 @@
+\documentclass{amsart}
+\usepackage{preamble,categories,macros,}
+\usepackage{locallabel,pftools}
+\usepackage{jmsdelim}
+\usepackage{jon-tikz}
+
+\addbibresource{refs.bib}
+
+\title{Accessibility and Artin Gluing}
+\author{Daniel Gratzer}
+\email{gratzer@cs.au.dk}
+\address{Aarhus, Denmark}
+\date{\today}
+
+\begin{document}
+\begin{abstract}
+  This note contains a few proofs of elementary facts in the theory of accessible
+  categories. Specifically, we show that comma categories are accessible under the appropriate
+  conditions and, as a corollary, derive that gluing along a lex accessible functor between
+  Grothendieck toposes gives rise to another Grothendieck topos.
+\end{abstract}
+
+\maketitle
+
+\section{Accessible Categories, Accessible Functors}
+\label{sec:accessible}
+
+All of these results may be found in \textcite{adamek-rosicky:1994}, we recall some relevant
+results here.
+
+\begin{definition}
+  \label{def:accessible:accessible-category}
+  A category $\EE$ is said to be \emph{$\kappa$-accessible} if the following two conditions hold:
+  \begin{enumerate}
+  \item $\EE$ has all $\kappa$-filtered limits.
+  \item There is a small set of $\kappa$-compact objects of $\EE$ which generates $\EE$ by
+    $\kappa$-filtered colimits.
+  \end{enumerate}
+  We say that $\EE$ is accessible if it is $\kappa$-accessible for some $\kappa$.
+\end{definition}
+
+\begin{lemma}
+  Any cocomplete accessible category is locally presentable.
+\end{lemma}
+
+\begin{definition}
+  \label{def:accessible-accessible-functor}
+  A functor between $\kappa$-accessible categories is $\kappa$-accessible if it preserves all
+  $\kappa$-filtered colimits. Again, we say that $F$ is accessible if $F$ is $\kappa$-accessible for
+  some $\kappa$ and its domain and codomain are accessible at this cardinal.
+\end{definition}
+
+\begin{definition}
+  \label{def:accessible:sharply-larger}
+  An regular cardinal $\lambda$ is said to be \emph{sharply larger} than another regular cardinal
+  $\kappa$ if for every $\lambda' < \lambda$, the set
+  $P_{\kappa} = \{S \in \Pow{\lambda'} \mid \verts{S} < \kappa\}$ has a cofinal subset of
+  cardinality strictly less than $\lambda$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:accessible:sharp-directed-colim}
+  If $\kappa \lhd \lambda$, in each $\kappa$-directed poset every subset with less than $\lambda$
+  elements is contained in a $\kappa$-directed subset with less than $\lambda$ elements.
+\end{lemma}
+\begin{proof}
+  Suppose we have such a poset $P$ and a subset $X$ such that $\verts{X} < \lambda$. We wish to
+  define $Y$ such that (1.) $Y$ is $\kappa$-directed (2.) $X \subseteq Y$ (3.)
+  $\verts{Y} < \lambda$.
+
+  We will define $Y$ as the union of the chain $\bigcup_{i < \kappa} X_i$, where $X_i$ is defined by
+  transfinite induction. We set $X_0 = X$ and in all other the limit cases, $X_i$ is the union of
+  prior $X_j$s. For the successor cases, suppose we must define $1 + i$. We choose a cofinal subset
+  of $Z$ of $X_{i,\kappa} = \{S \in \Pow{X_i} \mid \verts{S} < \kappa\}$, by assumption, this can be
+  done such that $Z$ has cardinality strictly smaller than $\lambda$. For each $A \in X_{i,\kappa}$,
+  we choose some upper bound $p_A \in P$. We now take the following definition:
+  \[
+    X_{1 + i} = X_i \cup \bigcup_{A \in Z} (A \cup \{p_A\})
+  \]
+  By assumption, $X_i$ has cardinality smaller than $\lambda$, as does $Z$ and each
+  $A \cup \{p_A\}$. Therefore, using the fact that $\lambda$ is regular, we conclude that
+  $X_{1 + i}$ is strictly smaller than $\lambda$. Again using the regularity of $\lambda$, we
+  conclude that $Y = \bigcup_i X_i$ has cardinality strictly smaller than $\lambda$. It obviously
+  contains $X = X_0$, so it is sufficient to argue that $Y$ is $\kappa$-directed.
+
+  Take any $\kappa$-directed subset $(y_a)_{a \in A} \subseteq Y$. First, observe for any cofinal
+  subset $A' \subseteq A$, if $(y_a)_{a \in A'} \subseteq X_i$, then there is an upper-bound for
+  this $(y_a)_{a \in A}$ in $Y_{1 + i}$ by definition. Therefore, assume that for each $X_i$, there
+  exists some $a_i \subseteq A$ such that $y_{b} \not\in X_i$ for any $b > a_i$. This gives a
+  $\kappa$-chain $(y_{a_i})_{i < \kappa}$ which must have an upper bound $y_{a_\kappa}$. By
+  assumption, however, $y_{a_\kappa}$ must not be an element of any $X_i$, whence
+  $y_{a_\kappa} \not\in Y$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Raising the index of accessibility]
+  \label{thm:accessible:jack}
+  If $\EE$ is $\kappa$-accessible, and $\kappa \lhd \lambda$, then $\EE$ is $\lambda$-accessible.
+
+  In fact, this can be strengthened to an if and only if~\parencite[Theorem
+  2.11]{adamek-rosicky:1994}.
+\end{theorem}
+\begin{proof}
+  First, it is immediate that $\EE$ has all $\lambda$-filtered colimits as these are a strict subset
+  of $\kappa$-filtered colimits. It remains to show that $\EE$ is generated under $\lambda$-filtered
+  colimits by some set of $\lambda$-compact elements.
+
+  First, let us set $A$ to be the collection of all objects which are the $\kappa$-filtered colimits
+  of $\kappa$-compact objects of size strictly smaller than $\lambda$. This collection objects is
+  essentially small (since the collection of $\kappa$-compact objects is essentially small), and
+  every object in $A$ is $\lambda$-compact.
+
+  What remains is to show that every object of $\EE$ is a $\lambda$-filtered colimit of objects in
+  $A$. We observe that any object $X$ can already be expressed as a $\kappa$-directed colimit
+  $\Colim_{d \in D} X_d$ of $\kappa$-compact objects. Let us now take $\hat{D}$ to be the set of all
+  $\kappa$-directed subsets of $D$ with cardinality smaller than $\lambda$. Using
+  \cref{lem:accessible:sharp-directed-colim}, this subset is $\lambda$-directed. Moreover, it is we
+  have that $\{{d} \in D\}$ is cofinal in $\hat{D}$, and that $X_S = \Colim_S X_d$ is a colimit of
+  objects in $A$. Therefore, $\Colim_{S \in \hat{D}} X_S \cong \Colim_{d \in D} X_d \cong X$,
+  exhibiting $X$ as a $\lambda$-directed colimit of objects in $A$ as required.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:accessible:index}
+  If $\EE$ is an accessible category, it is $\kappa$-accessible for arbitrarily large $\kappa$.
+\end{corollary}
+
+\begin{corollary}
+  \label{cor:accessible:uniform}
+  If $\EE,\DD$ are accessible categories and $\Mor[F]{\EE}{\DD}$ is accessible, then there are
+  arbitrarily large $\kappa$ such that $\EE,\DD$ and $F$ are all $\kappa$-accessible and $F$
+  preserves $\kappa$-compact objects.
+\end{corollary}
+\begin{proof}
+  The only interesting detail to prove is that an accessible functor preserves $\lambda$-compact
+  objects for all sufficiently large $\lambda$, we can then take the maximum of all ordinals
+  involved and use \cref{cor:accessible:index} to raise the indices of everything involved.
+
+  Let us suppose that $\kappa$ is large enough to be the index of accesssiblity for $F$, $\EE$, and
+  $\DD$. First, observe suppose that $K_i$ is $\kappa$-compact, then there exists some $\kappa_i$
+  such that $F(K_i)$ is $\kappa_i$ presentable. Moreover, since there is a set of $\kappa$-compact
+  objects, there is an ordinal $\kappa' \ge \kappa$ such that $F(K)$ is $\kappa'$-compact for all
+  $\kappa$-compact $K : \EE$. Now, if $X$ is $\lambda$-compact in $\EE$, this means that it can be
+  written as the retract of a $\kappa$-directed colimit of size $\lambda$ comprised of
+  $\kappa$-compact objects. Therefore, $F(X)$ is a retract of a $\kappa$-directed colimit of size
+  $\lambda$ comprised of $\kappa'$-compact objects. Therefore, $F(X)$ is $\lambda$-compact.
+\end{proof}
+
+
+\section{Gluing Grothendiek Toposes}
+\label{sec:gluing}
+
+In this section we prove the following theorem:
+\begin{theorem}
+  Given two Grothendieck toposes $\EE,\FF$ and an accessible lex functor $\Mor[F]{\EE}{\FF}$,
+  $\GL{F}$ is a Grothendieck topos.
+\end{theorem}
+\begin{proof}
+  It is proven in some detail of in \parencite[A2.1.12]{johnstone:2002} that $\GL{F}$ is an
+  elementary topos if $F$ is lex. A more detailed proof of the construction of the subobject
+  classifier is given by \textcite{gratzer:subobject-of-glued-topos:2020}. It remains to shwo that
+  $\GL{F}$ is (1.) cocomplete (2.) accessible.
+
+  For the first requirement, we will prove the stronger result that $\GL{F}$ is cocomplete whenever
+  $\EE$ and $\FF$ are cocomplete. Suppose we are given a diagram $\Mor{D}{\GL{F}}$, there are two
+  induced diagrams $\Mor{D}{\EE}$ and $\Mor{D}{\FF}$. Since these categories are cocomplete, we can
+  form colimits for these diagrams $X = \Colim_i D_i$ and $\widebar{X} = \Colim_i
+  \widebar{D}_i$. Moreover, by assumption there is a morphism $\Mor[d_i]{\widebar{D}_i}{F(D_i)}$,
+  and these induce a morphism $\Mor[x]{\widebar{X}}{F(X)}$. We claim this is the colimit.  Suppose
+  we are given $\Mor[y]{\widebar{Y}}{F(Y)}$ together with maps $\Mor[y_i]{d_i}{y}$:
+  \[
+    \DiagramSquare{
+      nw = \widebar{D}_i,
+      sw = F(D_i),
+      ne = \widebar{Y},
+      se = F(Y),
+      ne/style = {right = 4cm of nw},
+      east = y,
+      west = d_i,
+      south = F(y_i),
+      north = \widebar{y}_i,
+    }
+  \]
+  The condition on these maps ensure that they assemble into a pair of maps $\Mor[e]{X}{Y}$ and
+  $\Mor[e]{\bar{X}}{\bar{Y}}$. We wish to show that these maps commute appropriately, and this
+  follows from the universal property of $\bar{X}$.
+
+  For the second requirement, we must show that $\GL{F}$ is accessible. First, let us use
+  \cref{cor:accessible:uniform} to fix a $\kappa$ such that $\EE$, $\FF$ and $F$ are all $\kappa$
+  accessible, and moreover that $F$ preserves $\kappa$-compact objects. Consider the following set
+  of objects:
+  \[
+    S = \{\Mor[x]{\widebar{X}}{F(X)} \mid X,\Bar{X}\ \text{$\kappa$-compact}\}
+  \]
+  This is a set, because there is a set of $\kappa$-compact objects in $\EE$ and $\FF$ by
+  accessibility. We first claim that this set contains $\kappa$-compact objects, which follows from
+  the fact that $\widebar{X}$ and $F(X)$ are both $\kappa$-compact. Moreover, this set is closed
+  under $\kappa$-colimits, because colimits are take pointwise. Therefore, if we can show that all
+  objects are generated by $\kappa$-filtered colimits of objects from $S$, we will have completed
+  the proof.
+
+  Let us fix some arbitrary element $\Mor[x]{\widebar{X}}{X}$. By assumption, there are two
+  $\kappa$-filtered diagrams, $(\widebar{D}_i)_{i \in I_0}$ and $(D_i)_{i \in I_1}$, such that
+  $\widebar{X} = \Colim_i \widebar{D}_i$ and $X = \Colim_i D_i$. We write $\iota_i$ for the
+  inclusion of $D_i$ into $X$ and $\widebar{\iota}_i$ for the inclusion of $\widebar{D}_i$ into
+  $\widebar{X}$. Now, we take these two diagrams and define the following:
+  \[
+    (d_j)_{j \in J} = \{\Mor[d]{\widebar{D}_{i_0}}{D_{i_1}} \mid F(\iota_i) \circ d = x \circ \bar{\iota}_i \}
+  \]
+  There exists a morphism from $d_i$ to $d_j$ in this diagram precisely when the expected
+  commutative square exists. Furthermore, using the fact that the underlying two diagrams are
+  cofiltered, we observe that this diagram is cofiltered. Therefore, we are reduced to showing that
+  $x$ is the colimit this diagram. There is a canonical cocone $\Mor{d_i}{x}$ built out of the
+  cocones for $\widebar{X}$ and $X$, and because colimits are determined pointwise this cocone is
+  universal.
+\end{proof}
+
+
+\printbibliography
+\end{document}
