@@ -29,3 +29,8 @@ The secrecy is marginal at best.
 
  A construction of the product of Grothendieck topoi as well as the corresponding tensor product on
  locally presentable categories.
+
+ - `affine-structure-sheaf.tex`
+
+  A construction of the structure sheaf on `Spec A`, detailing proving the gluing and restriction
+  properties and extending the sheaf from a basis to the full topology.
