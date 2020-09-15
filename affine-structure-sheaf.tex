@@ -50,10 +50,14 @@ opens through the standard procedure. We therefore must define $\StructSh$ on $D
 \[
   \StructSh(D(f)) = A_f
 \]
-We observe that $D(f) \subseteq D(g)$ if and only if $g \mid f$, so there is a map induced by
-universal property from $\Mor{A_g}{A_f}$. The universal property shows that this restriction map
-satisfies the functoriality conditions. It remains to show that $\StructSh$ satisfies the
-restriction and gluing properties.
+We observe that if $D(f) \subseteq D(g)$ then we must have $V(g) \subseteq V(f)$, so $g \in p$
+implies $f \in p$ for any prime ideal $p$. As a consequence, in $g$ must not be contained in any
+prime ideals in $A_f$ as the prime ideals of $A_f$ are precisely primes of $A$ which avoid
+$f$. Therefore, $g$ is invertible in $A$.
+
+From this, we deduce a map $\Mor{A_g}{A_f}$ induced by universal property from. The universal
+property ensures that this restriction map satisfies the functoriality conditions. It remains to
+show that $\StructSh$ satisfies the restriction and gluing properties.
 
 In order to prove this, we will first restrict to the case where the open set is $D(1)$, the
 entirety of $\Spec(A)$, and the cover is comprised entirely of basis sets.
@@ -93,7 +97,7 @@ Next, we must show that we can glue elements together.
     \label{eq:overlap-condition-1}
     (f_if_j)^{m_{i,j}}(b_if_j^{n_j} - b_jf_i^{n_i}) = 0
   \end{equation}
-  We pick an $m$ such that $m > m_{i,j}$. We also set $c_i = b_if_i^{m \cdot (n_i + 1)}$ and
+  We pick an $m$ such that $m > m_{i,j}$. We also set $c_i = b_if_i^{(n_i + 1)m}$ and
   $g_i = f_i^{(n_i + 1)m + n_i}$. We observe that $c_i/g_i = b_i/f_i^{n_i}$, but we may now simplify
   \cref{eq:overlap-condition-1} to the following:
   \begin{equation}
@@ -103,7 +107,7 @@ Next, we must show that we can glue elements together.
   Calculating more explicitly,
   \begin{align*}
     c_ig_j
-    &= b_if_i^{m \cdot (n_i + 1)}f_j^{n_j + m(n_j + 1)}\\
+    &= b_if_i^{(n_i + 1)m}f_j^{n_j + m(n_j + 1)}\\
     &= b_if_j^{n_j} (f_if_j)^{m}(f_i^{n_i}f_j^{n_j})^m\\
     &= b_jf_i^{n_i} (f_if_j)^{m}(f_i^{n_i}f_j^{n_j})^m && \text{\cref{eq:overlap-condition-1}}\\
     &= b_jf_i^{n_i + m(n_i + 1)}f_j^{m(n_j + 1)}\\
