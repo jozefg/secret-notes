@@ -87,23 +87,28 @@ Next, we must show that we can glue elements together.
   By the argument in \cref{thm:basis-restrict}, we restrict our attention to some finite subset of
   $I$ which still covers $\Spec A$.
 
-  First, we observe that $a_i = \frac{b_i}{f_i^{m_i}}$ by the definition of $\StructSh$ with
+  First, we observe that $a_i = \frac{b_i}{f_i^{n_i}}$ by the definition of $\StructSh$ with
   $b_i \in A$. Moreover, since these agree on the overlap, we must have the following equations:
   \begin{equation}
     \label{eq:overlap-condition-1}
-    (f_if_j)^{m_{i,j}}(b_if_j^{m_j} - b_jf_i^{m_i}) = 0
+    (f_if_j)^{m_{i,j}}(b_if_j^{n_j} - b_jf_i^{n_i}) = 0
   \end{equation}
-  We pick an $m$ such that $m > m_{i,j}$. We also set $c_i = b_if_i^{m \cdot m_i}$ and
-  $g_i = f_i^{m_i (m + 1)}$. We observe that $c_i/g_i = b_i/f_i^{m_i}$, but we may now simplify
+  We pick an $m$ such that $m > m_{i,j}$. We also set $c_i = b_if_i^{m \cdot (n_i + 1)}$ and
+  $g_i = f_i^{(n_i + 1)m + n_i}$. We observe that $c_i/g_i = b_i/f_i^{n_i}$, but we may now simplify
   \cref{eq:overlap-condition-1} to the following:
   \begin{equation}
     \label{eq:overlap-condition-2}
     c_ig_j = c_jg_i
   \end{equation}
-  Here, we use the observation:
-  \[
-    c_ig_j = b_if_i^{m \cdot m_i}f_j^{m \cdot (m_j+1)} = b_if_j^{m_j} (f_i^{m_i}f_j^{m_j})^m
-  \]
+  Calculating more explicitly,
+  \begin{align*}
+    c_ig_j
+    &= b_if_i^{m \cdot (n_i + 1)}f_j^{n_j + m(n_j + 1)}\\
+    &= b_if_j^{n_j} (f_if_j)^{m}(f_i^{n_i}f_j^{n_j})^m\\
+    &= b_jf_i^{n_i} (f_if_j)^{m}(f_i^{n_i}f_j^{n_j})^m && \text{\cref{eq:overlap-condition-1}}\\
+    &= b_jf_i^{n_i + m(n_i + 1)}f_j^{m(n_j + 1)}\\
+    &= c_j g_i
+  \end{align*}
   Next, notice that $(D(g_i))_{i \in I}$ still covers $\Spec A$, so there must be some family
   $(r_i)_{i \in I}$ satisfying the following property:
   \begin{equation}
