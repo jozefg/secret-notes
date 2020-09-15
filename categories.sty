@@ -73,15 +73,5 @@
     \vrule height.35\ht0 depth0pt width.06\ht0 \kern.12\ht0 \vrule height.53\ht0%
     depth-.47\ht0 width.35\ht0 }}
 
-\makeatletter
-\newcommand{\colim@}[2]{%
-  \vtop{\m@th\ialign{##\cr
-    \hfil$#1\operator@font colim$\hfil\cr
-    \noalign{\nointerlineskip\kern1.5\ex@}#2\cr
-    \noalign{\nointerlineskip\kern-\ex@}\cr}}%
-}
-\newcommand{\Colim}{%
-  \mathop{\mathpalette\colim@{\rightarrowfill@\scriptscriptstyle}}\nmlimits@
-}
-\newcommand{\Lim}{\mathop{\mathpalette\varlim@{\rightarrowfill@\scriptscriptstyle}}\nmlimits@}
-\makeatother
+\newcommand{\Colim}{\mathop{\mathsf{colim}}}
+\newcommand{\Lim}{\mathop{\mathsf{lim}}}
